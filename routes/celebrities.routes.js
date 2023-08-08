@@ -50,6 +50,7 @@ router.get("/", (req, res, next) => {
           allCelebrities: response
         })
     
+        
       })
       .catch((error)=>{
         next(error)
