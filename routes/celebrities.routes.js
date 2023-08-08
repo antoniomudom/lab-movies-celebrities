@@ -23,26 +23,40 @@ router.post("/create-celebrity", (req, res, next) => {
         occupation: req.body.occupation,
         catchPhrase: req.body.catchPhrase
       })
-      .then(() => {
+      .then((response) => {
         console.log("celebrity creada")
         // ???
         // quiero que el usuario vaya a otra pagina cuando esto ocurra
         // res.redirect("/book")
-        res.redirect(`/celebrity/${response._id}/details`)
+        res.redirect(`/celebrities`)
     
       })
       .catch((error) => {
-        next(error)
+        console.log(error)
       })
 
     
 })
 
-//GET =>Show all celebrities
+//GET =>coger las celebrities de mongo y renderizarlas en celebrities.hbs
 
-router.get("/celebrities", (req, res, next) => {
 
-    res.render("celebrities/celebrities.hbs")
+router.get("/", (req, res, next) => {
+    Celebrity.find()
+    .select({name:1})
+    .then((response)=>{
+        console.log(response)
+        res.render("celebrities/celebrities.hbs",{
+          allCelebrities: response
+        })
+    
+      })
+      .catch((error)=>{
+        next(error)
+    
+      })
+
+    
     })
 
 

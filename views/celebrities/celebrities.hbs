@@ -1,1 +1,14 @@
-<h3>Soy una celebrity</h3>
+
+
+<div>
+
+<h3>Lista de celebrities</h3>
+
+{{#each this.allCelebrities}}
+<li>
+    <a href="/celebrities/{{this._id}}">{{this.name}}</a>
+</li>
+
+{{/each}}
+
+</div>

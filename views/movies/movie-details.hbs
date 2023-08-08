@@ -1,0 +1,37 @@
+<div>
+
+<h3>Aquí detalles de la peli</h3>
+
+<div>
+
+    <h4>{{oneMovie.title}}</h4>
+    <p>genre:{{oneMovie.genre}}</p>
+    <p>plot:{{oneMovie.plot}}</p>
+    
+        {{#each oneMovie.cast}}
+    <li>
+         {{this.name}} participó en {{this.title}}
+       
+
+    </li>
+       
+    
+     {{/each}}
+
+    <a href="/movie/{{this.oneMovie._id}}/edit">
+        <button>Ir a editar</button>
+    </a>
+<form action="/movie/{{this.oneMovie._id}}/delete" method="post">
+<button>Borrar peli</button>
+
+</form>
+        
+    
+
+
+
+    
+
+</div>
+
+</div>
