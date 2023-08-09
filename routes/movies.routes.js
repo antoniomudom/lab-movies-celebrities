@@ -85,59 +85,50 @@ router.post("/:movieId/delete", async (req, res, next) => {
 
 //iteraccion 10 get
 
-
 //nos entra en editar hacemos los cambios y cuando le damos a actualizar sin sentido ninguno nos lleva a http://localhost:3000/movies//edit y no sabemos de donde ni xq
-
-
-
+//Lo hemos arreglado. Era la línea 108 que no habíamos puesto oneMovie, solo response y por eso no lo cogia en la vista edit-movie.hbs SOlucionado.
 router.get("/:movieId/edit", async (req, res, next) => {
-
   try {
-    
-    const response = await Movie.findById(req.params.movieId)
-    const allCelebrities = await Celebrities.find().select({name: 1})
+    const response = await Movie.findById(req.params.movieId);
+    const allCelebrities = await Celebrities.find().select({ name: 1 });
 
-    const cloneAllCelebrities = JSON.parse( JSON.stringify(allCelebrities) )
+    const cloneAllCelebrities = JSON.parse(JSON.stringify(allCelebrities));
     // clonamos el arr porque los array de documentos, mongo a veces no nos permite modificarlos
 
-    console.log(response)
+    console.log(response);
     cloneAllCelebrities.forEach((eachCelebrity) => {
       if (response.cast.toString() === eachCelebrity._id.toString()) {
-        console.log("el seleccionado es:", eachCelebrity)
+        console.log("el seleccionado es:", eachCelebrity);
         eachCelebrity.isSelected = true;
       }
-    })
-    console.log(cloneAllCelebrities)
+    });
+    console.log(cloneAllCelebrities);
 
     res.render("movies/edit-movie.hbs", {
-       response,
-      allCelebrities: cloneAllCelebrities
-    })
+      oneMovie: response,
+      allCelebrities: cloneAllCelebrities,
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
-
-})
+});
 
 router.post("/:movieId/edit", (req, res, next) => {
+  const movieId = req.params.movieId;
+  const { title, genre, plot, cast } = req.body;
 
-  const movieId = req.params.moviesId
-  const {title, genre, plot, cast} = req.body
-  
   Movie.findByIdAndUpdate(movieId, {
-      title,
-      genre,
-      plot,
-      cast
+    title,
+    genre,
+    plot,
+    cast,
   })
-  .then(() => {
-  res.redirect("/movies")
-  })
-  .catch((error) => {
-      next(error)
-  })
-})
-
-
+    .then(() => {
+      res.redirect("/movies");
+    })
+    .catch((error) => {
+      next(error);
+    });
+});
 
 module.exports = router;
